@@ -88,6 +88,11 @@ enum {
      * position updates to this layer via setCursorPositionAsync().
      */
     HWC_IS_CURSOR_LAYER = 0x00000002
+    ,HWC_SET_OPAQUE = 0x00000020
+#if defined(USE_GRALLOC_FLAG_FOR_HDMI) || defined(USES_VIRTUAL_DISPLAY)
+    ,HWC_SCREENSHOT_ANIMATOR_LAYER = 0x00000100
+#endif
+    ,HWC_DIM_LAYER = 0x00000200
 };
 
 /*
@@ -196,6 +201,22 @@ enum {
     /* Indicates which of the vendor-defined color transforms is provided by
      * this configuration. */
     HWC_DISPLAY_COLOR_TRANSFORM             = 6,
+
+#ifdef USES_VIRTUAL_DISPLAY
+    /* In case of virtual display, HWC can be used even if there is no overlay layer.
+     * virtual display should know whether HWC is used or not.
+     */
+    HWC_DISPLAY_COMPOSITION_TYPE            = 7,
+
+    /* The format and usage can be changed by scenario in virtual display.
+     * virtual display should get the color format through HWC
+     */
+    HWC_DISPLAY_GLES_FORMAT                 = 8,
+    HWC_DISPLAY_SINK_BQ_FORMAT              = 9,
+    HWC_DISPLAY_SINK_BQ_USAGE               = 10,
+    HWC_DISPLAY_SINK_BQ_WIDTH               = 11,
+    HWC_DISPLAY_SINK_BQ_HEIGHT              = 12,
+#endif
 };
 
 /* Allowed events for hwc_methods::eventControl() */

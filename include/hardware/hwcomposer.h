@@ -215,6 +215,9 @@ typedef struct hwc_layer_1 {
              */
             hwc_region_t visibleRegionScreen;
 
+            hwc_region_t transparentRegion;
+            hwc_region_t coveredOpaqueRegion;
+
             /* Sync fence object that will be signaled when the buffer's
              * contents are available. May be -1 if the contents are already
              * available. This field is only valid during set(), and should be
@@ -322,21 +325,35 @@ typedef struct hwc_layer_1 {
              * their origin is the top-left corner.
              */
             hwc_region_t surfaceDamage;
+
+            uint32_t dataSpace;
         };
     };
 
 #ifdef __LP64__
     /*
+     * transparentRegion, coveredOpaqueRegion are added
+     * this struct is 144 byte(112 + 32bit)
+     */
+#if 0
+    /*
      * For 64-bit mode, this struct is 120 bytes (and 8-byte aligned), and needs
      * to be padded as such to maintain binary compatibility.
      */
     uint8_t reserved[120 - 112];
+#endif
 #else
+    /*
+     * transparentRegion, coveredOpaqueRegion are added
+     * this struct is 100 byte(84 + 16bit)
+     */
+#if 0
     /*
      * For 32-bit mode, this struct is 96 bytes, and needs to be padded as such
      * to maintain binary compatibility.
      */
     uint8_t reserved[96 - 84];
+#endif
 #endif
 
 } hwc_layer_1_t;
